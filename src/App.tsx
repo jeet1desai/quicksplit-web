@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 
 import "./App.css";
+import PrivacyPolicy from "./pages/privacy-policy";
+import TermsAndConditions from "./pages/terms-conditions";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,8 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
             </Routes>
           </BrowserRouter>
         </div>
