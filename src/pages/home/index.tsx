@@ -1,6 +1,5 @@
 import { FeaturesSection } from "@/components/features-section";
 import Footer from "@/components/footer";
-import LogoCarousel from "@/components/logo-carousel";
 import Navigation from "@/components/navigation";
 import { Button } from "@/components/ui/button";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
