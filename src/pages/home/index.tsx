@@ -111,10 +111,16 @@ const Home = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Try QuickSplit on WhatsApp
           </h2>
-          <Button size="lg" className="button-gradient">
-            Create Account
-            <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
+          <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl text-center mx-auto">
+            Track shared expenses effortlessly in your WhatsApp groups. <br />
+            No apps to download, no spreadsheets to manage.
+          </p>
+          <Link to="/signup">
+            <Button size="lg" className="button-gradient">
+              Create Account
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
         </motion.div>
       </section>
 

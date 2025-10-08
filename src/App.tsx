@@ -11,6 +11,7 @@ import TermsAndConditions from "./pages/terms-conditions";
 import AboutPage from "./pages/about";
 import { FAQSection } from "./components/faq-section";
 import Login from "./pages/auth/login";
+import Signup from "./pages/auth/signup";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/faq" element={<FAQSection />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
             </Routes>
           </BrowserRouter>
         </div>
