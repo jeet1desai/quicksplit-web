@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 import WhatsAppIcon from "@/assets/whatsapp.svg";
 import LogoIcon from "@/assets/logo.svg";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,38 +20,12 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === "testimonials") {
-      const testimonialSection = document.querySelector(".animate-marquee");
-      if (testimonialSection) {
-        const yOffset = -100; // Offset to account for the fixed header
-        const y =
-          testimonialSection.getBoundingClientRect().top +
-          window.pageYOffset +
-          yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
-    } else if (sectionId === "cta") {
-      const ctaSection = document.querySelector(".button-gradient");
-      if (ctaSection) {
-        const yOffset = -100;
-        const y =
-          ctaSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
-    } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
-
   const navItems = [
     {
       name: "Try Now",
       icon: <img src={WhatsAppIcon} className="size-5" />,
-      // onClick: () => scrollToSection("features"),
+      onClick: () =>
+        window.open("https://wa.me/message/B7TFROF4KEZNM1", "_blank"),
     },
   ];
 
@@ -64,29 +39,29 @@ const Navigation = () => {
     >
       <div className="mx-auto h-full px-6">
         <nav className="flex items-center justify-between h-full">
-          <div className="flex items-center gap-2">
-            <img src={LogoIcon} className="size-8" />
-            <span className="font-bold text-base">QuickSplit</span>
-          </div>
+          <Link to="/">
+            <div className="flex items-center gap-2">
+              <img src={LogoIcon} className="size-8" />
+              <span className="font-bold text-base">QuickSplit</span>
+            </div>
+          </Link>
 
           <div className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <a
                 key={item.name}
-                // href={item.href}
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   if (item.onClick) {
-                //     item.onClick();
-                //   }
-                // }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (item.onClick) {
+                    item.onClick();
+                  }
+                }}
                 className="cursor-pointer text-sm text-foreground hover:text-muted-foreground transition-all duration-300 flex items-center gap-1"
               >
                 {item.name}
               </a>
             ))}
             <Button
-              onClick={() => scrollToSection("cta")}
               size="sm"
               className="button-gradient !w-[100px]"
             >
@@ -108,6 +83,12 @@ const Navigation = () => {
                       variant="outline"
                       className="mt-4 flex items-center gap-2 rounded-3xl"
                       size="lg"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (item.onClick) {
+                          item.onClick();
+                        }
+                      }}
                     >
                       {item.name}
                       {item.icon}
@@ -116,7 +97,6 @@ const Navigation = () => {
                   <Button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
-                      scrollToSection("cta");
                     }}
                     className="button-gradient mt-4 "
                   >

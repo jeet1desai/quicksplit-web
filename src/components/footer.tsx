@@ -1,5 +1,6 @@
 import { Twitter } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -13,9 +14,11 @@ const Footer = () => {
                 Split expenses with your friends and family.
               </p>
               <div className="flex space-x-4">
-                <Button variant="outline" size="icon">
-                  <Twitter className="w-4 h-4" />
-                </Button>
+                <Link to="https://x.com/q_split" target="_blank">
+                  <Button variant="outline" size="icon">
+                    <Twitter className="w-4 h-4" />
+                  </Button>
+                </Link>
               </div>
             </div>
 
