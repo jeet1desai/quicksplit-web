@@ -2,7 +2,6 @@ import { FeaturesSection } from "@/components/features-section";
 import Footer from "@/components/footer";
 import Navigation from "@/components/navigation";
 import { Button } from "@/components/ui/button";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { motion } from "framer-motion";
 import { ArrowRight, Command } from "lucide-react";
 import CTABackground from "@/assets/cta-bg.png";
@@ -39,11 +38,11 @@ const Home = () => {
         <div className="max-w-4xl relative z-10 mx-auto">
           <h1 className="text-5xl md:text-7xl font-normal mb-4 tracking-tight text-center">
             <span className="text-gray-200 font-semibold mb-4">
-              <TextGenerateEffect words="Split Bills" />
+              Split Bills
             </span>
             <br />
             <span className="text-white font-semibold">
-              <TextGenerateEffect words="Not Friendships" />
+              Not Friendships
             </span>
           </h1>
 

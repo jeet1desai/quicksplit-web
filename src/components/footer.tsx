@@ -27,7 +27,8 @@ const Footer = () => {
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="https://tallyfeed.com/"
+                    href="https://app.youform.com/forms/0fmgvh1o"
+                    target="_blank"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     Contact Us
@@ -35,7 +36,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="#pricing"
+                    href="/faq"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     FAQ
@@ -43,7 +44,8 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="https://userjot.com"
+                    href="https://quicksplit.userjot.com/"
+                    target="_blank"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     Feedback
@@ -57,7 +59,7 @@ const Footer = () => {
               <ul className="space-y-2">
                 <li>
                   <a
-                    href="#"
+                    href="/about"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     About
