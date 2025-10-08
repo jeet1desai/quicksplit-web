@@ -61,12 +61,11 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
-            <Button
-              size="sm"
-              className="button-gradient !w-[100px]"
-            >
-              Login
-            </Button>
+            <Link to="/login">
+              <Button size="sm" className="button-gradient !w-[100px]">
+                Login
+              </Button>
+            </Link>
           </div>
 
           <div className="md:hidden">

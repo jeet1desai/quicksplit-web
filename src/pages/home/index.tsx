@@ -6,10 +6,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Command } from "lucide-react";
 import CTABackground from "@/assets/cta-bg.png";
 import Conversation from "@/components/conversation";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="min-h-screen text-foreground">
+    <div className="min-h-screen text-foreground mx-auto text-center">
       <Navigation />
 
       <motion.section
@@ -24,7 +25,7 @@ const Home = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="inline-block mb-4 px-4 py-1.5 rounded-full glass mx-auto"
+          className="inline-block text-center mb-4 px-4 py-1.5 rounded-full glass mx-auto"
         >
           <span className="text-sm font-medium">
             <Command className="w-4 h-4 inline-block mr-2" />
@@ -41,9 +42,7 @@ const Home = () => {
               Split Bills
             </span>
             <br />
-            <span className="text-white font-semibold">
-              Not Friendships
-            </span>
+            <span className="text-white font-semibold">Not Friendships</span>
           </h1>
 
           <motion.p
@@ -62,12 +61,17 @@ const Home = () => {
             transition={{ delay: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 items-center mx-auto justify-center"
           >
-            <Button size="lg" className="button-gradient">
-              Try on WhatsApp
-            </Button>
-            <Button size="lg" variant="link" className="text-white">
-              Learn More <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
+            <Link target="_blank" to="https://wa.me/message/B7TFROF4KEZNM1">
+              <Button size="lg" className="button-gradient">
+                Try on WhatsApp
+              </Button>
+            </Link>
+
+            <Link to="/about">
+              <Button size="lg" variant="link" className="text-white">
+                Learn More <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
 
@@ -105,11 +109,8 @@ const Home = () => {
           className="bg-[#0A0A0A]/80 backdrop-blur-lg border border-white/10 rounded-2xl p-8 md:p-12 text-center relative z-10"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Try QuickSplit on WhatsApp
+            Try QuickSplit on WhatsApp
           </h2>
-          {/* <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Try QuickSplit on WhatsApp now!
-          </p> */}
           <Button size="lg" className="button-gradient">
             Create Account
             <ArrowRight className="ml-2 w-4 h-4" />
@@ -117,7 +118,7 @@ const Home = () => {
         </motion.div>
       </section>
 
-      <div className="">
+      <div className="text-center mx-auto">
         <Footer />
       </div>
     </div>

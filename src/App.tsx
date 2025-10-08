@@ -10,6 +10,7 @@ import PrivacyPolicy from "./pages/privacy-policy";
 import TermsAndConditions from "./pages/terms-conditions";
 import AboutPage from "./pages/about";
 import { FAQSection } from "./components/faq-section";
+import Login from "./pages/auth/login";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/faq" element={<FAQSection />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </BrowserRouter>
         </div>

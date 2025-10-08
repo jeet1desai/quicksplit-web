@@ -4,7 +4,7 @@ const TermsAndConditions = () => {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen text-left bg-gradient-to-b from-background to-muted/20">
+      <div className="min-h-screen text-left bg-gradient-to-b from-background to-muted/20 pt-16" >
         <div className="container mx-auto px-4 py-16 max-w-6xl">
           <div className="mb-12 text-center">
             <div className="space-y-4">
@@ -18,7 +18,7 @@ const TermsAndConditions = () => {
             </div>
           </div>
 
-          <div className="glass-hover bg-card/50 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-border/50 shadow-sm">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-border/50 shadow-sm">
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               Welcome to{" "}
               <span className="font-medium text-foreground">QuickSplit</span>.
