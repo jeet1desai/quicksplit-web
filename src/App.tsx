@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import PrivacyPolicy from "./pages/privacy-policy";
 import TermsAndConditions from "./pages/terms-conditions";
@@ -16,19 +16,33 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { Toaster } from "./components/ui/toaster";
 import { cookieStorage } from "./lib/cookie";
+import SettingsPage from "./pages/settings";
+import { useAuth } from "./hooks/useAuth";
 
 const isAuthenticated = () => {
-  return cookieStorage.getItem("p_id");
+  return !!cookieStorage.getItem("p_id");
 };
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate("/login");
-    }
+    const checkAuth = () => {
+      if (!isAuthenticated()) {
+        navigate("/login");
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, [navigate]);
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
 
   if (!isAuthenticated()) {
     return null;
@@ -81,14 +95,15 @@ export default function App() {
                 </Route>
 
                 <Route
-                  path="/dashboard"
+                  path="/"
                   element={
                     <ProtectedRoute>
                       <Outlet />
                     </ProtectedRoute>
                   }
                 >
-                  <Route index element={<DashboardHome />} />
+                  <Route path="dashboard" element={<DashboardHome />} />
+                  <Route path="settings" element={<SettingsPage />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

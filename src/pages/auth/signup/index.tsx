@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import authServices from "@/services/auth/auth.services";
 import { formatPhoneNumber } from "@/lib/format";
 import { HttpStatusCode } from "axios";
@@ -30,13 +30,16 @@ const validationSchema = Yup.object().shape({
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
 });
 
-const initialValues: SignupFormValues = {
-  name: "",
-  phone: "",
-  password: "",
-};
-
 const Signup = () => {
+  const [searchParams] = useSearchParams();
+  const phoneFromUrl = searchParams.get("phone") || "";
+
+  const initialValues: SignupFormValues = {
+    name: "",
+    phone: "+" + phoneFromUrl,
+    password: "",
+  };
+
   const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -95,6 +98,7 @@ const Signup = () => {
                     <Field name="phone">
                       {() => (
                         <PhoneInput
+                          disabled={Boolean(phoneFromUrl)}
                           country={"in"}
                           value={values.phone}
                           onChange={(phone) => setFieldValue("phone", phone)}

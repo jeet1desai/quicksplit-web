@@ -75,10 +75,7 @@ api.interceptors.response.use(
       switch (status) {
         case HttpStatusCode.Unauthorized:
           console.error("Unauthorized: Please log in", data);
-          // _notify?.({
-          //   title: data?.error.title || "Token Expired",
-          //   description: getErrorDescription(data?.error.description) || "Please log in again.",
-          // });
+          _notify?.({ title: "Token Expired", description: "Please log in again." });
 
           const currentPath = _location?.pathname || "/";
           const redirectState = { from: currentPath };
@@ -107,39 +104,41 @@ api.interceptors.response.use(
           break;
 
         case HttpStatusCode.MethodNotAllowed:
-          // _notify?.({
-          //   title: data?.error.title || "Method Not Allowed",
-          //   description:
-          //     getErrorDescription(data?.error.description) ||
-          //     "The requested method is not allowed for this resource. Please check the request method.",
-          // });
+          _notify?.({
+            title: "Method Not Allowed",
+            description: "The requested method is not allowed for this resource. Please check the request method.",
+          });
           break;
 
         case HttpStatusCode.BadRequest:
           console.error("Bad Request:", data);
+          _notify?.({ title: "Bad Request", description: "The requested method is not allowed for this resource. Please check the request method." });
           break;
 
         case HttpStatusCode.Forbidden:
           console.error("Forbidden: You do not have permission to access this resource");
-          break;
-        case HttpStatusCode.BadRequest:
-          console.error("Bad Request:");
+          _notify?.({ title: "Forbidden", description: "You do not have permission to access this resource." });
           break;
 
         case HttpStatusCode.NotFound:
           console.error("Not Found:", data);
+          _notify?.({ title: "Not Found", description: "The requested resource was not found." });
           break;
 
         case HttpStatusCode.InternalServerError:
           console.error("Server Error:", data);
+          _notify?.({ title: "Server Error", description: "An internal server error occurred. Please try again later." });
           break;
 
         case HttpStatusCode.UnprocessableEntity:
           console.error("Unprocessable Entity:", data);
+          _notify?.({ title: "Unprocessable Entity", description: "An internal server error occurred. Please try again later." });
           break;
 
         default:
           console.error(`HTTP Error ${status}:`, data);
+          _notify?.({ title: "HTTP Error", description: `HTTP Error ${status}: ${data}` });
+          break;
       }
     } else if (error.request) {
       console.error("No response received (possible CORS or network error):", error);

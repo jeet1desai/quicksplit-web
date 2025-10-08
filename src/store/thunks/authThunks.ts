@@ -3,8 +3,7 @@ import { clearUser } from '../slice/userSlice';
 
 export const logoutThunk = () => async (dispatch: (action: any) => void) => {
   try {
-    cookieStorage.removeItem('access_token');
-    cookieStorage.removeItem('refresh_token');
+    cookieStorage.clear();
     dispatch(clearUser());
   } catch (err) {
     dispatch(clearUser());
