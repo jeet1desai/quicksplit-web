@@ -4,7 +4,6 @@ const initialState: any = {
   name: "",
   countryCode: "",
   phoneNumber: "",
-  rememberMe: false
 };
 
 const userSlice = createSlice({

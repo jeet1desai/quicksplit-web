@@ -1,5 +1,4 @@
-import { Toaster } from "sonner";
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import Home from "./pages/home";
@@ -10,13 +9,16 @@ import { FAQSection } from "./components/faq-section";
 import Login from "./pages/auth/login";
 import Signup from "./pages/auth/signup";
 import DashboardHome from "./pages/dashboard";
-import { DashboardLayout } from "./pages/dashboard/layout";
 import { useDispatch } from "./store";
 import { bindApiDeps, setApiNotifier } from "./services/base-service";
 import { useToast } from "./hooks/use-toast";
+import { Provider } from "react-redux";
+import store from "./store";
+import { Toaster } from "./components/ui/toaster";
+import { cookieStorage } from "./lib/cookie";
 
 const isAuthenticated = () => {
-  return localStorage.getItem("isAuthenticated") === "true";
+  return cookieStorage.getItem("p_id");
 };
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -35,39 +37,66 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const AuthRoute = ({ children }: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
+  if (isAuthenticated()) {
+    return null;
+  }
+
+  return <>{children}</>;
+};
+
 const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <ApiBinder>
+    <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <div className="min-h-screen bg-background">
-          <Toaster position="top-center" />
+          <Toaster />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsAndConditions />} />
-              <Route path="/faq" element={<FAQSection />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<DashboardHome />} />
-              </Route>
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <ApiBinder>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsAndConditions />} />
+                <Route path="/faq" element={<FAQSection />} />
+                <Route
+                  element={
+                    <AuthRoute>
+                      <Outlet />
+                    </AuthRoute>
+                  }
+                >
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                </Route>
+
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Outlet />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<DashboardHome />} />
+                </Route>
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </ApiBinder>
           </BrowserRouter>
         </div>
       </QueryClientProvider>
-    </ApiBinder>
+    </Provider>
   );
 }
 

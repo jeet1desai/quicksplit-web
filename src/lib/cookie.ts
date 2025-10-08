@@ -14,8 +14,11 @@ class CookieStorage {
     });
   }
 
-  getItem(key: string) {
-    return Cookies.get(key);
+  getItem(key: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${key}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
   }
 
   setItem(key: string, value: string, attributes?: Cookies.CookieAttributes) {
