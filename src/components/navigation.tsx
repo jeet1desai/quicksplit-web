@@ -60,7 +60,7 @@ const Navigation = () => {
               </a>
             ))}
             {cookieStorage.getItem("p_id") ? (
-              <Link to="/dashboard">
+              <Link to="/settings">
                 <Button size="sm" className="button-gradient !w-[100px]">
                   Dashboard
                 </Button>

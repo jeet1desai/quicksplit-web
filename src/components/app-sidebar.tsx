@@ -1,16 +1,17 @@
 import * as React from "react";
-import { Home, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useSelector, type RootState } from "@/store";
 
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
 const navItems = [
-  {
-    title: "Dashboard",
-    icon: Home,
-    url: "/dashboard",
-  },
+  // {
+  //   title: "Dashboard",
+  //   icon: Home,
+  //   url: "/dashboard",
+  // },
   // {
   //   title: "Expenses",
   //   icon: CreditCard,
@@ -54,6 +55,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const isActive = (url: string) => {
     return currentPath === url || currentPath.startsWith(`${url}/`);
   };
+
+  const user = useSelector((state: RootState) => state.user);
+  console.log(user);
 
   return (
     <Sidebar variant="floating" className="border-r border-border/50 bg-background/80 backdrop-blur-sm" {...props}>
@@ -122,11 +126,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <div className="mt-auto border-t border-border/50 p-4">
         <div className="flex items-center gap-3 rounded-lg bg-accent/30 p-3 text-sm">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <span className="font-medium">JD</span>
+            <span className="font-medium">{user?.name?.charAt(0).toUpperCase() || "U"}</span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="truncate font-medium">John Doe</p>
-            <p className="truncate text-xs text-muted-foreground">john@example.com</p>
+            <p className="truncate font-medium">{user?.name || "User"}</p>
+            <p className="truncate text-xs text-muted-foreground">{user?.phoneNumber || ""}</p>
           </div>
         </div>
       </div>

@@ -5,18 +5,18 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppLayout } from "@/components/app-layout";
 import authServices from "@/services/auth/auth.services";
 import { HttpStatusCode } from "axios";
-import { useDispatch } from "@/store";
+import { useDispatch, useSelector, type RootState } from "@/store";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { logoutThunk } from "@/store/thunks/authThunks";
+import userServices from "@/services/user/user.services";
 
 type ProfileFormData = {
   name: string;
-  email: string;
   phone: string;
 };
 
@@ -30,12 +30,23 @@ export default function SettingsPage() {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
 
-  const [profileData] = useState<ProfileFormData>({
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+91 9876543210",
+  const [profileData, setProfileData] = useState<ProfileFormData>({
+    name: user.name || "",
+    phone: user.phoneNumber ? `+${user.countryCode} ${user.phoneNumber}` : "",
   });
+
+  useEffect(() => {
+    setProfileData({
+      name: user.name || "",
+      phone: user.phoneNumber ? `+${user.countryCode} ${user.phoneNumber}` : "",
+    });
+  }, [user]);
+
+  useEffect(() => {
+    getVerificationCode();
+  }, []);
 
   const [securityData, setSecurityData] = useState<SecurityFormData>({
     currentPassword: "",
@@ -68,6 +79,42 @@ export default function SettingsPage() {
   };
 
   const [loading, setLoading] = useState(false);
+  const [verificationCode, setVerificationCode] = useState<string>("");
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const getVerificationCode = async () => {
+    try {
+      setLoading(true);
+      const response = await userServices.getVerificationCode();
+      if (response && response.status === HttpStatusCode.Ok) {
+        setVerificationCode(response.data.invite.inviteCode);
+      }
+    } catch (error) {
+      console.error("Error getting verification code:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateVerificationCode = async () => {
+    try {
+      setIsGenerating(true);
+      const response = await userServices.generateVerificationCode();
+      if (response && response.status === HttpStatusCode.Ok) {
+        setVerificationCode(response.data.invite.inviteCode);
+      }
+    } catch (error) {
+      console.error("Error generating verification code:", error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    if (!verificationCode) return;
+    navigator.clipboard.writeText(verificationCode);
+    toast({ title: "Copied!", description: "Verification code copied to clipboard" });
+  };
 
   const handleSignOut = async () => {
     try {
@@ -90,6 +137,7 @@ export default function SettingsPage() {
       <Tabs defaultValue="profile" className="space-y-4">
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="verification">Verification</TabsTrigger>
           {/* <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger> */}
@@ -108,10 +156,6 @@ export default function SettingsPage() {
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
                     <Input id="name" disabled value={profileData.name} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" disabled value={profileData.email} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
@@ -245,6 +289,55 @@ export default function SettingsPage() {
 
               <div className="flex justify-end">
                 <Button>Save Preferences</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Verification Tab */}
+        <TabsContent value="verification" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Verification Code</CardTitle>
+              <CardDescription>Generate and manage your verification code for account verification.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label>Your Verification Code</Label>
+                  <div className="flex items-center space-x-2">
+                    <div className="flex-1 flex items-center justify-between p-3 border rounded-md bg-muted/50">
+                      <span className="font-mono text-lg tracking-wider">{verificationCode || "••••••"}</span>
+                      {verificationCode && (
+                        <Button variant="ghost" size="sm" onClick={copyToClipboard} className="text-muted-foreground hover:text-foreground">
+                          Copy
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Share this code only with trusted services for verification purposes.</p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {!verificationCode && (
+                    <Button onClick={generateVerificationCode} disabled={isGenerating} className="w-full sm:w-auto">
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        "Generate Verification Code"
+                      )}
+                    </Button>
+                  )}
+
+                  {verificationCode && (
+                    <Button variant="outline" onClick={copyToClipboard} className="w-full sm:w-auto">
+                      Copy to Clipboard
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

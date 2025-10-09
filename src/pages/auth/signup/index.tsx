@@ -65,7 +65,7 @@ const Signup = () => {
 
         cookieStorage.setItem("p_id", response.data.user._id);
         toast({ title: "Success", description: "Signup successful" });
-        navigate("/dashboard");
+        navigate("/settings");
       }
     } catch (error) {
       console.error("Signup error:", error);

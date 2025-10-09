@@ -50,7 +50,7 @@ api.interceptors.response.use(
       const { status, data } = error.response;
 
       const requestUrl = (originalRequest?.url || "").toString();
-      const isAuthEndpoint = /\/auth\/(signin|logout|refresh-token)/.test(requestUrl);
+      const isAuthEndpoint = /\/auth\/(signin|signup|signout|refresh-token)/.test(requestUrl);
 
       if (status === HttpStatusCode.Unauthorized && originalRequest && !originalRequest._retry && !isAuthEndpoint) {
         originalRequest._retry = true;

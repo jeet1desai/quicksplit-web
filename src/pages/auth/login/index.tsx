@@ -55,7 +55,7 @@ const Login = () => {
 
         cookieStorage.setItem("p_id", response.data.user._id);
         toast({ title: "Success", description: "Login successful" });
-        navigate("/dashboard");
+        navigate("/settings");
       }
     } catch (error) {
       console.error("Login error:", error);

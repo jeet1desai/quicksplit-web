@@ -56,7 +56,7 @@ const AuthRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate("/dashboard");
+      navigate("/settings");
     }
   }, [navigate]);
 

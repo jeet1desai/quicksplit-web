@@ -20,9 +20,9 @@ export const useAuth = () => {
           if (response && response.status === HttpStatusCode.Ok) {
             dispatch(
               setUser({
-                name: response.data.name,
-                countryCode: response.data.countryCode,
-                phoneNumber: response.data.phoneNumber,
+                name: response.data.user.name,
+                countryCode: response.data.user.countryCode,
+                phoneNumber: response.data.user.phoneNumber,
               })
             );
           }
